@@ -6,16 +6,24 @@ const client = Binance.default({
 });
 
 export async function executeMarketOrder(symbol, side, quantity) {
-  try {
-    const order = await client.order({
-      symbol,
-      side,
-      type: "MARKET",
-      quantity
-    });
+  const order = await client.order({
+    symbol,
+    side,
+    type: "MARKET",
+    quantity
+  });
 
-    return order;
-  } catch (error) {
-    throw new Error(error.message);
-  }
+  return order;
+}
+
+export async function getBalance() {
+  const account = await client.accountInfo();
+
+  return account.balances
+    .filter((b) => Number(b.free) > 0 || Number(b.locked) > 0)
+    .map((b) => ({
+      asset: b.asset,
+      free: b.free,
+      locked: b.locked
+    }));
 }
