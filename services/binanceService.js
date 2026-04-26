@@ -1,17 +1,16 @@
 import Binance from "binance-api-node";
 
 /**
- * 🔐 Binance Client (TESTNET)
- * This avoids region restrictions from Render servers
+ * Binance Client (TESTNET)
  */
-const client = Binance.default({
+const client = Binance({
   apiKey: process.env.BINANCE_API_KEY,
   apiSecret: process.env.BINANCE_SECRET_KEY,
-  httpBase: "https://testnet.binance.vision"
+  httpBase: "https://testnet.binance.vision/api"
 });
 
 /**
- * 🚀 Execute Market Order
+ * Execute Market Order
  */
 export async function executeMarketOrder(symbol, side, quantity) {
   try {
@@ -23,27 +22,25 @@ export async function executeMarketOrder(symbol, side, quantity) {
     });
 
     return order;
-
   } catch (error) {
     throw new Error(error.message);
   }
 }
 
 /**
- * 💰 Get Account Balance
+ * Get Account Balance
  */
 export async function getBalance() {
   try {
     const account = await client.accountInfo();
 
     return account.balances
-      .filter((b) => Number(b.free) > 0 || Number(b.locked) > 0)
-      .map((b) => ({
+      .filter(b => Number(b.free) > 0 || Number(b.locked) > 0)
+      .map(b => ({
         asset: b.asset,
         free: b.free,
         locked: b.locked
       }));
-
   } catch (error) {
     throw new Error(error.message);
   }
