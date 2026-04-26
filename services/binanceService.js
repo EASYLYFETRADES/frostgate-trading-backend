@@ -1,4 +1,7 @@
-import Binance from "binance-api-node";
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+
+const Binance = require("binance-api-node").default;
 
 /**
  * Binance Client (TESTNET)
