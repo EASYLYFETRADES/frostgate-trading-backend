@@ -1,6 +1,6 @@
 import Binance from "binance-api-node";
 
-const client = Binance({
+const client = Binance.default({
   apiKey: process.env.BINANCE_API_KEY,
   apiSecret: process.env.BINANCE_SECRET_KEY
 });
@@ -18,9 +18,4 @@ export async function executeMarketOrder(symbol, side, quantity) {
   } catch (error) {
     throw new Error(error.message);
   }
-}
-
-export async function getBalance() {
-  const account = await client.accountInfo();
-  return account.balances;
 }
